@@ -55,23 +55,48 @@ $(function() {
   //   }
   // });
 
-  let inputFields = $("input:text, input:password, textarea");
+  // Working with form input (focus and blur)
+  // let inputFields = $("input:text, input:password, textarea");
 
-  inputFields.focus(function() {
-    $(this).css("box-shadow", "0 0 4px #666");
+  // inputFields.focus(function() {
+  //   $(this).css("box-shadow", "0 0 4px #666");
+  // });
+
+  // inputFields.blur(function() {
+  //   $(this).css("box-shadow", "none");
+  // });
+
+  // $("#name").blur(function() {
+  //   let text = $(this).val();
+  //   if (text.length < 3) {
+  //     $(this).css("box-shadow", "0 0 4px #811");
+  //   } else {
+  //     $(this).css("box-shadow", "0 0 4px #181");
+  //   }
+  // })
+
+  let flickrApiUrl = "https://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  
+  $.getJSON(flickrApiUrl, {
+    // options
+    tags: "sun, beach",
+    tagmode: "any",
+    format: "json"
+  }).done(function(data) {
+    // success
+    console.log(data);
+    $.each(data.items, function(index, value) {
+      console.log(value);
+      $("<img>").attr("src", value.media.m).appendTo("#flickr");
+
+      if (index == 4) {
+        return false;
+      }
+
+    });
+  }).fail(function() {
+    // failure
+    alert("Ajax call failed");
   });
-
-  inputFields.blur(function() {
-    $(this).css("box-shadow", "none");
-  });
-
-  $("#name").blur(function() {
-    let text = $(this).val();
-    if (text.length < 3) {
-      $(this).css("box-shadow", "0 0 4px #811");
-    } else {
-      $(this).css("box-shadow", "0 0 4px #181");
-    }
-  })
 
 });
